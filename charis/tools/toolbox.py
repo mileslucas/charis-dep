@@ -268,9 +268,9 @@ def compute_times(frames_info, idx=None):
     # get necessary values
     time_start = frames_info['DATE-OBS'].values
     time_end = frames_info['DET FRAM UTC'].values
-    time_delta = (time_end - time_start) / frames_info['DET NDIT'].values.astype(np.int)
+    time_delta = (time_end - time_start) / frames_info['DET NDIT'].values.astype(int)
     DIT = np.array(frames_info['DET SEQ1 DIT'].values.astype(
-        np.float) * 1000, dtype='timedelta64[ms]')
+        float) * 1000, dtype='timedelta64[ms]')
 
     # calculate UTC time stamps
     if idx is None:
@@ -318,8 +318,8 @@ def compute_angles(frames_info, true_north=-1.75):
     date_fix = Time('2016-07-12')
     if np.any(frames_info['MJD'].values <= date_fix.mjd):
         try:
-            alt = frames_info['TEL ALT'].values.astype(np.float)
-            drot2 = frames_info['INS4 DROT2 BEGIN'].values.astype(np.float)
+            alt = frames_info['TEL ALT'].values.astype(float)
+            drot2 = frames_info['INS4 DROT2 BEGIN'].values.astype(float)
             pa_correction = np.degrees(np.arctan(np.tan(np.radians(alt-2.*drot2))))
         except KeyError:
             pa_correction = 0
@@ -327,7 +327,7 @@ def compute_angles(frames_info, true_north=-1.75):
         pa_correction = 0
 
     # RA/DEC
-    ra_drot = frames_info['INS4 DROT2 RA'].values.astype(np.float)
+    ra_drot = frames_info['INS4 DROT2 RA'].values.astype(float)
     ra_drot_h = np.floor(ra_drot / 1e4)
     ra_drot_m = np.floor((ra_drot - ra_drot_h * 1e4)/1e2)
     ra_drot_s = ra_drot - ra_drot_h*1e4 - ra_drot_m*1e2
@@ -335,7 +335,7 @@ def compute_angles(frames_info, true_north=-1.75):
     ra_deg = ra_hour*15
     frames_info['RA'] = ra_deg.value
 
-    dec_drot = frames_info['INS4 DROT2 DEC'].values.astype(np.float)
+    dec_drot = frames_info['INS4 DROT2 DEC'].values.astype(float)
     sign = np.sign(dec_drot)
     udec_drot = np.abs(dec_drot)
     dec_drot_d = np.floor(udec_drot / 1e4)

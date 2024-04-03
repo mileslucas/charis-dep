@@ -100,7 +100,6 @@ def _smoothandmask_hexgeometry(datacube, good, neighbour_indices,
     flat_data = flatten_cube(datacube.data)
     flat_ivar = flatten_cube(datacube.ivar)
     # flat_good = good.reshape(-1)
-    neighbour_indices = np.array(neighbour_indices)
 
     flat_data[flat_data == 0.] = np.nan
     flat_ivar[flat_ivar == 0.] = np.nan
@@ -473,7 +472,7 @@ def _tag_psflets(shape, x, y, good, dx=10, dy=10):
 
     """
 
-    psflet_indx = np.zeros(shape, np.int)
+    psflet_indx = np.zeros(shape, int)
     oldshape = x.shape
     x_int = (np.reshape(x + 0.5, -1)).astype(int)
     y_int = (np.reshape(y + 0.5, -1)).astype(int)
