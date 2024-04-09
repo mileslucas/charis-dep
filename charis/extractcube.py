@@ -4,11 +4,6 @@
 # A provisional routine for actually producing and returning data cubes.
 #########################################################################
 
-import charis
-from charis import instruments, primitives, utr
-from charis.image import Image
-from charis.image.image_geometry import resample_image_cube
-from charis.tools import sph_ifs_correct_spectral_xtalk, sph_ifs_fix_badpix, fit_background
 import copy
 import glob
 import json
@@ -20,6 +15,16 @@ import re
 import numpy as np
 from astropy.io import fits
 from astropy.stats import mad_std, sigma_clipped_stats
+
+import charis
+from charis import instruments, primitives, utr
+from charis.image import Image
+from charis.image.image_geometry import resample_image_cube
+from charis.tools import (
+    fit_background,
+    sph_ifs_correct_spectral_xtalk,
+    sph_ifs_fix_badpix,
+)
 
 log = logging.getLogger('main')
 
@@ -153,6 +158,8 @@ def getcube(dit=None, read_idx=[1, None], filename=None, calibdir=None,
 
     calibration_path_instrument = instrument.calibration_path_instrument
     calibration_path_mode = instrument.calibration_path_mode
+
+    maxcpus = min(maxcpus, multiprocessing.cpu_count())
 
     maskarr = None
     if mask:
